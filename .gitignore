@@ -12,3 +12,7 @@ SurvivalGame/Binaries/Win64/SurvivalGame.lib
 SurvivalGame/Releases
 *.log
 *.target.xml
+*.target
+*.modules
+*.hotreload
+*.db
