@@ -39,6 +39,26 @@ ASWeapon::ASWeapon(const class FObjectInitializer& PCIP)
 	MaxAmmoPerClip = 30;
 	NoAnimReloadDuration = 1.5f;
 	NoEquipAnimDuration = 0.5f;
+
+	/* Flash Lights attached to gun */
+	LightConeComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LightConeComponent"));
+	LightConeComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
+	LightConeComponent->SetupAttachment(Mesh, LightAttachSource);
+
+	SpotLightComponent = CreateDefaultSubobject<USpotLightComponent>(TEXT("SpotLightComponent"));
+	SpotLightComponent->SetupAttachment(Mesh, LightAttachSource);
+	SpotLightComponent->AddLocalRotation(FRotator(0, -90, 0));
+
+	bFlashActive = false;
+	LastLightIntensity = -1.0f;
+	
+	EmissiveParamN = TEXT("Brightness");
+	MaxLightIntensity = 5.0f;
+
+	Mesh->CreateAndSetMaterialInstanceDynamic(0);
+
+	UpdateRifleLight(bFlashActive);
+
 }
 
 
@@ -115,6 +135,31 @@ void ASWeapon::AttachMeshToPawn(EInventorySlot Slot)
 		Mesh->SetHiddenInGame(false);
 		Mesh->AttachToComponent(PawnMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, AttachPoint);
 	}
+}
+
+void ASWeapon::UpdateRifleLight(bool Enabled)
+{
+	SpotLightComponent->SetVisibility(Enabled);
+	LightConeComponent->SetVisibility(Enabled);
+
+	if (Mesh)
+	{
+		Mesh->SetScalarParameterValueOnMaterials(EmissiveParamN, Enabled ? MaxLightIntensity : 0.0f);
+	}
+}
+
+void ASWeapon::ToggleRifleLight()
+{
+	if (bFlashActive)
+	{
+		bFlashActive = false;
+	}
+	else if (!bFlashActive)
+	{
+		bFlashActive = true;
+	}
+
+	UpdateRifleLight(bFlashActive);
 }
 
 

@@ -231,6 +231,9 @@ private:
 	/* Mapped to input */
 	void OnEquipSecondaryWeapon();
 
+	/* Mapped to input */
+	void ToggleRifleLight();
+
 	void StartWeaponFire();
 
 	void StopWeaponFire();

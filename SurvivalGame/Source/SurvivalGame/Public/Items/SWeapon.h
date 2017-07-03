@@ -121,6 +121,10 @@ public:
 	/* You can assign default values to function parameters, these are then optional to specify/override when calling the function. */
 	void AttachMeshToPawn(EInventorySlot Slot = EInventorySlot::Hands);
 
+	void UpdateRifleLight(bool Enabled);
+
+	void ToggleRifleLight();
+
 protected:
 
 	bool CanFire() const;
@@ -178,6 +182,9 @@ private:
 	/* Time between shots for repeating fire */
 	float TimeBetweenShots;
 
+	/* Boolean for flashlight active*/
+	bool bFlashActive;
+
 	/************************************************************************/
 	/* Simulation & FX                                                      */
 	/************************************************************************/
@@ -208,10 +215,27 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	FName MuzzleAttachPoint;
 
+	UPROPERTY(EditDefaultsOnly)
+	FName LightAttachSource;
+
 	bool bPlayingFireAnim;
 
 	UPROPERTY(Transient, ReplicatedUsing=OnRep_BurstCounter)
 	int32 BurstCounter;
+
+	UPROPERTY(VisibleDefaultsOnly)
+	UStaticMeshComponent* LightConeComponent;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Material")
+	FName EmissiveParamN;
+
+	UPROPERTY(VisibleDefaultsOnly)
+	USpotLightComponent* SpotLightComponent;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Flash")
+	float MaxLightIntensity;
+
+	float LastLightIntensity;
 
 protected:
 

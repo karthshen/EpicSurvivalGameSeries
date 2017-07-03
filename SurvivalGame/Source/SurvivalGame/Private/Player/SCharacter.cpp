@@ -152,6 +152,8 @@ void ASCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ASCharacter::OnStartFire);
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &ASCharacter::OnStopFire);
 
+	PlayerInputComponent->BindAction("ToggleRifleFlashlight", IE_Released, this, &ASCharacter::ToggleRifleLight);
+
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &ASCharacter::OnReload);
 
 	PlayerInputComponent->BindAction("NextWeapon", IE_Pressed, this, &ASCharacter::OnNextWeapon);
@@ -669,6 +671,11 @@ void ASCharacter::OnStopFire()
 	StopWeaponFire();
 }
 
+
+void ASCharacter::ToggleRifleLight()
+{
+	CurrentWeapon->ToggleRifleLight();
+}
 
 void ASCharacter::StartWeaponFire()
 {
