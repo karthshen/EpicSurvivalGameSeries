@@ -16,3 +16,4 @@ SurvivalGame/Releases
 *.modules
 *.hotreload
 *.db
+*.opendb
